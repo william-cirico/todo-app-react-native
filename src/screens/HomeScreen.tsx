@@ -1,5 +1,5 @@
-import { ScrollView, Text, View } from "react-native";
-import { IconButton } from "react-native-paper";
+import { StyleSheet, Text, View } from "react-native";
+import { Button, IconButton } from "react-native-paper";
 import { TodoList } from "../components/lists/TodoList";
 import { theme } from "../themes";
 import { Todo } from "../types/todo";
@@ -12,9 +12,9 @@ export function HomeScreen() {
     ];
 
     return (
-        <View>
-            <View>
-                <Text>Lista de Tarefas</Text>
+        <View style={styles.container}>
+            <View style={styles.header}>
+                <Text style={styles.headerText}>Lista de Tarefas</Text>
                 <IconButton 
                     icon="logout-variant"
                     size={40}
@@ -23,7 +23,25 @@ export function HomeScreen() {
                 />
             </View>
             <TodoList todos={todos} />
+            <Button icon={"plus"} mode="contained">Adicionar tarefa</Button>
             {/* <TodoForm /> */}
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: theme.colors.background,
+        padding: 16,
+        flex: 1,
+    },
+    header: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 10
+    },
+    headerText: {
+        fontSize: 36
+    }
+});
