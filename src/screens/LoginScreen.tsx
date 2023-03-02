@@ -1,10 +1,14 @@
-import { StyleSheet, View } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Lottie from "lottie-react-native";
 import { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
+import { GuestStackParamList } from "../routes/GuestRoutes";
 import { theme } from "../themes";
 
-export function LoginScreen() {
+type LoginScreenProps = NativeStackScreenProps<GuestStackParamList, "Login">;
+
+export function LoginScreen({ navigation }: LoginScreenProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -36,7 +40,12 @@ export function LoginScreen() {
                     onChangeText={setPassword}
                 />
                 <Button style={styles.button} icon={"login-variant"} onPress={() => { }} mode="contained">Entrar</Button>
-                <Button style={{ backgroundColor: theme.colors.secondary }} icon={"plus"} onPress={() => { }} mode="contained">Cadastrar-se</Button>
+                <Button 
+                    style={{ backgroundColor: theme.colors.secondary }} 
+                    icon={"plus"} 
+                    onPress={() => navigation.push("SignUp", { email })} 
+                    mode="contained"
+                >Cadastrar-se</Button>
             </View>
         </View>
     );
