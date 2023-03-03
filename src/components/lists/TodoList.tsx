@@ -1,9 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Todo } from "../../types/todo";
-import Animated from "react-native-reanimated";
-import { Checkbox, IconButton } from "react-native-paper";
+import Animated, { Layout, LightSpeedInLeft, LightSpeedInRight, LightSpeedOutRight } from "react-native-reanimated";
+import { IconButton } from "react-native-paper";
 import dayjs from "dayjs";
 import { theme } from "../../themes";
+import { Checkbox } from "../controllers/Checkbox";
+import { useState } from "react";
+import { useTodo } from "../../contexts/TodoContext";
 
 type Props = {
     todos: Todo[];
@@ -11,15 +14,23 @@ type Props = {
 
 function TodoItem({ todo }: { todo: Todo }) {
     const dueDate = dayjs(todo.dueDate).format("DD/MM/YYYY HH:mm");
+    const [checked, setChecked] = useState(false);
+
+    const { removeTodo } = useTodo();
 
     return (
-        <Animated.View style={stylesTodoItem.container}>
-            <Checkbox status="checked" />
+        <Animated.View 
+            style={stylesTodoItem.container}
+            entering={LightSpeedInLeft}
+            exiting={LightSpeedOutRight}
+            layout={Layout.springify()}
+        >
+            <Checkbox checked={checked} onCheck={() => setChecked(!checked)} />
             <View style={stylesTodoItem.textContainer}>
                 <Text style={stylesTodoItem.todoName}>{todo.name}</Text>
                 <Text>{dueDate}</Text>
             </View>
-            <IconButton icon="delete" iconColor="#fff" containerColor={theme.colors.primary} />
+            <IconButton onPress={() => removeTodo(todo.id)} icon="delete" iconColor="#fff" containerColor={theme.colors.primary} />
         </Animated.View>
     );
 }
