@@ -1,5 +1,6 @@
 import { IconButton, Modal, ModalProps, Portal, Provider, TextInput } from "react-native-paper";
 import { StyleSheet, Text, View } from "react-native";
+import { DatePicker } from "../controllers/DatePicker";
 
 type Props = {
     onDismiss: VoidFunction;
@@ -14,7 +15,7 @@ export function AddTodoModal(props: Props) {
                 <IconButton icon="close" onPress={props.onDismiss} />
             </View>
             <TextInput mode="outlined" label="Nome" />
-            
+            <DatePicker />
         </Modal>
     </Portal>
 }
