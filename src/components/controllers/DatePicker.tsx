@@ -1,27 +1,29 @@
-import { useState } from "react";
-import { Platform, StyleSheet, Text, TouchableOpacity } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
+import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Button } from "react-native-paper";
 
-export function DatePicker() {
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState<"date" | "time">("date");
-    const [show, setShow] = useState(false);
+type Props = {
+    value: Date;
+    onChange: React.Dispatch<React.SetStateAction<Date>>;
+}
 
-    const onChange = (event, selectedDate) => {
+export function DatePicker({ value, onChange }: Props) {
+    const [mode, setMode] = useState<"date" | "time" | null>(null);
+
+    const onChangeDate = (event, selectedDate) => {
         const currentDate = selectedDate;
-        setShow(false);
-        setDate(currentDate);
+        onChange(currentDate);
 
         if (mode === "date") {
             showTimepicker();
+        } else if (mode === "time") {
+            setMode(null);
         }
     };
 
     const showMode = (currentMode) => {
-        if (Platform.OS === 'android') {
-            setShow(false);
-        }
         setMode(currentMode);
     };
 
@@ -36,15 +38,14 @@ export function DatePicker() {
     return (
         <>
             <TouchableOpacity style={styles.dateViewer} onPress={showDatepicker}>
-                <Text style={styles.dateViewerText}>{dayjs(date).format("D [de] MMMM - HH:mm")}</Text>
+                <Text>{dayjs(value).format("DD/MM - HH:mm")}</Text>
             </TouchableOpacity>
-            {show && (
+            {!!mode && (
                 <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
+                    value={value}
                     mode={mode}
                     is24Hour={true}
-                    onChange={onChange}
+                    onChange={onChangeDate}
                 />
             )}
         </>
@@ -53,7 +54,6 @@ export function DatePicker() {
 
 const styles = StyleSheet.create({
     dateViewer: {
-        backgroundColor: "#f5f5f5",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -64,7 +64,4 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginVertical: 20
     },
-    dateViewerText: {
-        color: "#fff"
-    }
 });

@@ -1,6 +1,7 @@
-import { IconButton, Modal, ModalProps, Portal, Provider, TextInput } from "react-native-paper";
 import { StyleSheet, Text, View } from "react-native";
-import { DatePicker } from "../controllers/DatePicker";
+import { IconButton, Modal, Portal } from "react-native-paper";
+import { useTodo } from "../../contexts/TodoContext";
+import { TodoForm } from "../forms/TodoForm";
 
 type Props = {
     onDismiss: VoidFunction;
@@ -8,14 +9,18 @@ type Props = {
 }
 
 export function AddTodoModal(props: Props) {
+    const { addTodo } = useTodo();
+
     return <Portal>
         <Modal {...props} contentContainerStyle={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>Adicionar tarefa</Text>
                 <IconButton icon="close" onPress={props.onDismiss} />
             </View>
-            <TextInput mode="outlined" label="Nome" />
-            <DatePicker />
+            <TodoForm onSubmit={({ name, dueDate}) => {
+                addTodo(name, dueDate);
+                props.onDismiss();
+            }} />
         </Modal>
     </Portal>
 }

@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import Lottie from "lottie-react-native";
-import { theme } from "../../themes";
 import { useEffect, useRef } from "react";
+import { useTheme } from "react-native-paper";
 
 type Props = {
     checked: boolean;
@@ -11,6 +11,7 @@ type Props = {
 export function Checkbox({ checked, onCheck }: Props) {
     const firstRun = useRef(true);
     const animation = useRef<any>(null!);
+    const theme = useTheme();
 
     useEffect(() => {
         if (firstRun.current) {

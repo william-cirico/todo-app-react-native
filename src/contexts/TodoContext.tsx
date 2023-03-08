@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { Todo } from "../types/todo";
+import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 import dayjs from "dayjs";
 
@@ -14,7 +15,7 @@ const TodoContext = createContext<TodoContextType>(null!);
 
 export function TodoContextProvider({ children }: { children: ReactNode }) {
     const [todos, setTodos] = useState<Todo[]>([
-        { id: "1", name: "Estudar React", doneAt: "", dueDate: "2023-02-28T20:00:00" },
+        { id: "1", name: "Estudar React", doneAt: "2023-03-07T20:01:00", dueDate: "2023-02-28T20:00:00" },
         { id: "2", name: "Estudar React Native", doneAt: "", dueDate: "2023-02-28T20:00:00" },
     ]);
 
@@ -37,7 +38,7 @@ export function TodoContextProvider({ children }: { children: ReactNode }) {
     function toggleTodo(id: string) {
         const updatedTodos = todos.map(todo => {
             if (todo.id === id) {
-                todo.doneAt = dayjs().toISOString();
+                todo.doneAt = todo.doneAt ? "" : dayjs().toISOString();
             }
 
             return todo;

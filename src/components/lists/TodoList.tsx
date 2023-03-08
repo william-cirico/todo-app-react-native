@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Todo } from "../../types/todo";
 import Animated, { Layout, LightSpeedInLeft, LightSpeedInRight, LightSpeedOutRight } from "react-native-reanimated";
-import { IconButton } from "react-native-paper";
+import { IconButton, useTheme } from "react-native-paper";
 import dayjs from "dayjs";
 import { theme } from "../../themes";
 import { Checkbox } from "../controllers/Checkbox";
@@ -14,21 +14,35 @@ type Props = {
 
 function TodoItem({ todo }: { todo: Todo }) {
     const dueDate = dayjs(todo.dueDate).format("DD/MM/YYYY HH:mm");
-    const [checked, setChecked] = useState(false);
+    const doneAt = dayjs(todo.doneAt).format("DD/MM/YYYY HH:mm");
+    const theme = useTheme();
 
-    const { removeTodo } = useTodo();
+    const backgroundColor = !!todo.doneAt
+        ? theme.colors.primaryContainer
+        : theme.colors.inversePrimary;
+
+    const { removeTodo, toggleTodo } = useTodo();
 
     return (
-        <Animated.View 
-            style={stylesTodoItem.container}
+        <Animated.View
+            style={[stylesTodoItem.container, { backgroundColor }]}
             entering={LightSpeedInLeft}
             exiting={LightSpeedOutRight}
             layout={Layout.springify()}
         >
-            <Checkbox checked={checked} onCheck={() => setChecked(!checked)} />
+            <Checkbox checked={!!todo.doneAt} onCheck={() => toggleTodo(todo.id)} />
             <View style={stylesTodoItem.textContainer}>
-                <Text style={stylesTodoItem.todoName}>{todo.name}</Text>
-                <Text>{dueDate}</Text>
+                <Text style={[
+                    stylesTodoItem.todoName,
+                    { textDecorationLine: !!todo.doneAt ? "line-through" : "none" }
+                ]}>{todo.name}</Text>
+                <Text>
+                    {
+                        !!todo.doneAt
+                            ? `Feito em: ${doneAt}`
+                            : dueDate
+                    }
+                </Text>
             </View>
             <IconButton onPress={() => removeTodo(todo.id)} icon="delete" iconColor="#fff" containerColor={theme.colors.primary} />
         </Animated.View>

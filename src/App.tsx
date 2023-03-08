@@ -1,20 +1,17 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { Provider as PaperProvider } from 'react-native-paper';
+import 'react-native-gesture-handler';
 import { TodoContextProvider } from './contexts/TodoContext';
-import { GuestRoutes } from './routes/GuestRoutes';
-import { HomeScreen } from './screens/HomeScreen';
-import { theme } from './themes';
+import { ProtectedRoutes } from './routes/ProtectedRoutes';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <PaperProvider theme={theme}>
-        {/* <GuestRoutes /> */}
+    <TodoContextProvider>
+      <NavigationContainer>
         <TodoContextProvider>
-          <HomeScreen />
+          <ProtectedRoutes />
         </TodoContextProvider>
-      </PaperProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+    </TodoContextProvider>
   );
 }
