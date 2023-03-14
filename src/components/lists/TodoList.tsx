@@ -1,12 +1,10 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Todo } from "../../types/todo";
-import Animated, { Layout, LightSpeedInLeft, LightSpeedInRight, LightSpeedOutRight } from "react-native-reanimated";
-import { IconButton, useTheme } from "react-native-paper";
 import dayjs from "dayjs";
-import { theme } from "../../themes";
-import { Checkbox } from "../controllers/Checkbox";
-import { useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { IconButton, useTheme } from "react-native-paper";
+import Animated, { Layout, LightSpeedInLeft, LightSpeedOutRight } from "react-native-reanimated";
 import { useTodo } from "../../contexts/TodoContext";
+import { Todo } from "../../types/todo";
+import { Checkbox } from "../controllers/Checkbox";
 
 type Props = {
     todos: Todo[];
@@ -52,8 +50,7 @@ function TodoItem({ todo }: { todo: Todo }) {
 const stylesTodoItem = StyleSheet.create({
     container: {
         flexDirection: "row",
-        height: 70,
-        backgroundColor: theme.colors.inversePrimary,
+        height: 70,        
         marginVertical: 3,
         borderRadius: 8,
         alignItems: "center",

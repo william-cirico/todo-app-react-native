@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import { darkTheme, lightTheme } from "../themes";
 
@@ -22,3 +22,5 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         </PaperProvider>
     </ThemeContext.Provider>;
 }
+
+export const useTheme = () => useContext(ThemeContext);
