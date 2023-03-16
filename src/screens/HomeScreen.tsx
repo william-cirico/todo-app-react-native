@@ -3,12 +3,14 @@ import { StyleSheet, Text, View } from "react-native";
 import { Button, IconButton, Provider, useTheme } from "react-native-paper";
 import { TodoList } from "../components/lists/TodoList";
 import { AddTodoModal } from "../components/modals/AddTodoModal";
+import { useAuth } from "../contexts/AuthContext";
 import { useTodo } from "../contexts/TodoContext";
 
 export function HomeScreen() {
     const { todos } = useTodo();
     const [showAddTodoModal, setShowAddTodoModal] = useState(false);
     const theme = useTheme();
+    const { logout } = useAuth();
 
     return (
         <Provider>
@@ -21,6 +23,7 @@ export function HomeScreen() {
                         size={32}
                         containerColor={theme.colors.primaryContainer}
                         iconColor={theme.colors.primary}
+                        onPress={logout}
                     />
                 </View>
                 <TodoList todos={todos} />

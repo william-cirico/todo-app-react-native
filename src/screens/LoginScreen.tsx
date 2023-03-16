@@ -2,29 +2,40 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Lottie from "lottie-react-native";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { Button, TextInput, useTheme } from "react-native-paper";
+import { useAuth } from "../contexts/AuthContext";
 import { GuestStackParamList } from "../routes/GuestRoutes";
-import { theme } from "../themes";
 
 type LoginScreenProps = NativeStackScreenProps<GuestStackParamList, "Login">;
 
 export function LoginScreen({ navigation }: LoginScreenProps) {
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const theme = useTheme();
+    const { login } = useAuth();
 
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Lottie resizeMode="cover" style={styles.logo} source={require("../assets/logo.json")} autoPlay loop={false} />
+                <Lottie
+                    resizeMode="cover"
+                    style={styles.logo}
+                    source={require("../assets/logo.json")}
+                    autoPlay
+                    loop={false}
+                    colorFilters={[
+                        { keypath: "Sheet", color: theme.colors.primary }
+                    ]}
+                />
             </View>
             <View style={styles.form}>
                 <TextInput
                     right={<TextInput.Icon icon="email" />}
                     label={"E-mail"}
-                    value={email}
+                    value={username}
                     mode={"outlined"}
-                    onChangeText={setEmail}
+                    onChangeText={setUsername}
                     keyboardType="email-address"
                 />
                 <TextInput
@@ -39,11 +50,16 @@ export function LoginScreen({ navigation }: LoginScreenProps) {
                     mode={"outlined"}
                     onChangeText={setPassword}
                 />
-                <Button style={styles.button} icon={"login-variant"} onPress={() => { }} mode="contained">Entrar</Button>
-                <Button 
-                    style={{ backgroundColor: theme.colors.secondary }} 
-                    icon={"plus"} 
-                    onPress={() => navigation.push("SignUp", { email })} 
+                <Button
+                    style={styles.button}
+                    icon={"login-variant"}
+                    onPress={() => login({username, password})}
+                    mode="contained"
+                >Entrar</Button>
+                <Button
+                    style={{ backgroundColor: theme.colors.secondary }}
+                    icon={"plus"}
+                    onPress={() => navigation.push("SignUp", { email: username })}
                     mode="contained"
                 >Cadastrar-se</Button>
             </View>

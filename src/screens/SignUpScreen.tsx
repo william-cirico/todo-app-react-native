@@ -1,7 +1,6 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import Lottie from "lottie-react-native";
-import { theme } from "../themes";
-import { Button, HelperText, TextInput } from "react-native-paper";
+import { Button, HelperText, TextInput, useTheme } from "react-native-paper";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -23,6 +22,8 @@ export function SignUpScreen({ navigation, route }: SignUpScreenProps) {
         password: "",
         confirmPassword: ""
     };
+
+    const theme = useTheme();
 
     return (
         <ScrollView style={styles.container}>

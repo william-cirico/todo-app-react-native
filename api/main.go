@@ -45,7 +45,7 @@ var USERS = []USER{
 }
 
 func Ping(w http.ResponseWriter, r *http.Request) {
-	respondWithJSON(w, http.StatusOK, map[string]string{"error": "Bem-vindo a API de Tarefas"})
+	respondWithJSON(w, http.StatusOK, map[string]string{"message": "Bem-vindo a API de Tarefas"})
 }
 
 func GetSubFromToken(r *http.Request) (string, error) {
@@ -232,10 +232,10 @@ func main() {
 	r.HandleFunc("/", Ping).Methods("GET")
 	r.HandleFunc("/todos", GetTodosOfUser).Methods("GET")
 	r.HandleFunc("/todos", CreateTodo).Methods("POST")
-	r.HandleFunc("/todos/{id:[0-9]+}", UpdateTodo).Methods("PUT")
-	r.HandleFunc("/todos/{id:[0-9]+}", DeleteTodo).Methods("DELETE")
+	r.HandleFunc("/todos/{id}", UpdateTodo).Methods("PUT")
+	r.HandleFunc("/todos/{id}", DeleteTodo).Methods("DELETE")
 	r.HandleFunc("/users", CreateUser).Methods("POST")
-	r.HandleFunc("/users/{id:[0-9]+}", UpdateUser).Methods("PUT")
+	r.HandleFunc("/users/{id}", UpdateUser).Methods("PUT")
 	r.HandleFunc("/users/login", LoginUser).Methods("POST")
 
 	handler := handlers.LoggingHandler(os.Stdout, handlers.CORS(

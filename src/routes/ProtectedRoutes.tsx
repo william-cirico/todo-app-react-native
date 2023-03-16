@@ -9,7 +9,6 @@ export function ProtectedRoutes() {
         <Drawer.Navigator 
             initialRouteName="Home"
             screenOptions={{ headerShown: false }}
-            defaultStatus="open"
             drawerContent={props => <SideMenu {...props} />}
         >
             <Drawer.Screen name="Home" component={HomeScreen} />

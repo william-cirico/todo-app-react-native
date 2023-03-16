@@ -1,10 +1,13 @@
-import { DrawerContentComponentProps } from "@react-navigation/drawer";
+import { DrawerContentComponentProps, DrawerItem } from "@react-navigation/drawer";
 import { StyleSheet, Text, View } from "react-native";
 import { Avatar, Switch, useTheme } from "react-native-paper";
-import { DrawerItem } from "@react-navigation/drawer";
+import { useTheme as useThemeContext } from "../../contexts/ThemeContext";
+import { darkTheme } from "../../themes";
 
 export function SideMenu(props: DrawerContentComponentProps) {
     const theme = useTheme();
+
+    const { theme: currentTheme, toggleTheme } = useThemeContext();
 
     return (
         <View>
@@ -18,9 +21,9 @@ export function SideMenu(props: DrawerContentComponentProps) {
             <DrawerItem
                 label={() => <View style={styles.menuItem}>
                     <Text>Tema escuro</Text>
-                    <Switch />
+                    <Switch value={currentTheme === darkTheme} onValueChange={toggleTheme} />
                 </View>}
-                onPress={() => { }}
+                onPress={toggleTheme}
             />
         </View>
     );
