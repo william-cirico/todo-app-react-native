@@ -28,7 +28,7 @@ function TodoItem({ todo }: { todo: Todo }) {
             exiting={LightSpeedOutRight}
             layout={Layout.springify()}
         >
-            <Checkbox checked={!!todo.doneAt} onCheck={() => toggleTodo(todo.id)} />
+            <Checkbox checked={!!todo.doneAt} onCheck={() => toggleTodo(todo)} />
             <View style={stylesTodoItem.textContainer}>
                 <Text style={[
                     stylesTodoItem.todoName,
@@ -70,7 +70,7 @@ export function TodoList({ todos }: Props) {
     return (
         <ScrollView>
             {
-                todos.map(todo => (
+                todos?.map(todo => (
                     <TodoItem key={todo.id} todo={todo} />
                 ))
             }

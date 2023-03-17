@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { userLogin } from "../api/auth";
@@ -35,9 +35,12 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
         }
     });
 
+    const queryClient = useQueryClient();
+
     async function logout() {
         await AsyncStorage.removeItem("@AccessToken_key");
         API.defaults.headers.common["Authorization"] = "";
+        queryClient.invalidateQueries(["todos"]);
         setUserId("");
     }
 

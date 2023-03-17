@@ -18,7 +18,7 @@ export function AddTodoModal(props: Props) {
                 <IconButton icon="close" onPress={props.onDismiss} />
             </View>
             <TodoForm onSubmit={({ name, dueDate}) => {
-                addTodo(name, dueDate);
+                addTodo({name, dueDate});
                 props.onDismiss();
             }} />
         </Modal>

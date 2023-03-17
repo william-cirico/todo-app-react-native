@@ -1,10 +1,12 @@
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import Lottie from "lottie-react-native";
 import { Button, HelperText, TextInput, useTheme } from "react-native-paper";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { GuestStackParamList } from "../routes/GuestRoutes";
+import { useMutation } from "@tanstack/react-query";
+import { User } from "../types/user";
 
 const validationSchema = yup.object().shape({
     name: yup.string().required("o nome é obrigatório").min(6, "o nome precisa ter no mínimo 6 caracteres"),
@@ -25,6 +27,12 @@ export function SignUpScreen({ navigation, route }: SignUpScreenProps) {
 
     const theme = useTheme();
 
+    const { mutate: createUser } = useMutation({
+        mutationFn: (user: User) => createUser(user),
+        onSuccess: () => Alert.alert("Sucesso!", "Usuário criado!"),
+        onError: () => Alert.alert("Falha", "Ocorreu uma falha ao criar o usuário")
+    });
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.logoContainer}>
@@ -41,7 +49,7 @@ export function SignUpScreen({ navigation, route }: SignUpScreenProps) {
             </View>
             <Formik
                 initialValues={initialValues}
-                onSubmit={values => console.log(values)}
+                onSubmit={values => createUser(values)}
                 validationSchema={validationSchema}
             >
                 {({ handleChange, handleBlur, isValid, handleSubmit, errors, values, touched }) => (

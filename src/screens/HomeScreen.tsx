@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Button, IconButton, Provider, useTheme } from "react-native-paper";
+import { ActivityIndicator, Button, IconButton, Provider, useTheme } from "react-native-paper";
 import { TodoList } from "../components/lists/TodoList";
 import { AddTodoModal } from "../components/modals/AddTodoModal";
 import { useAuth } from "../contexts/AuthContext";
 import { useTodo } from "../contexts/TodoContext";
 
 export function HomeScreen() {
-    const { todos } = useTodo();
+    const { todos, isLoading } = useTodo();
     const [showAddTodoModal, setShowAddTodoModal] = useState(false);
     const theme = useTheme();
     const { logout } = useAuth();
@@ -26,7 +26,11 @@ export function HomeScreen() {
                         onPress={logout}
                     />
                 </View>
-                <TodoList todos={todos} />
+                {
+                    isLoading 
+                        ? <ActivityIndicator />
+                        : <TodoList todos={todos} />
+                }
                 <Button onPress={() => setShowAddTodoModal(true)} icon={"plus"} mode="contained">Adicionar tarefa</Button>
             </View>
         </Provider>

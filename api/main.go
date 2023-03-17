@@ -17,11 +17,11 @@ import (
 )
 
 type TODO struct {
-	Id      string     `json:"id"`
-	Name    string     `json:"name"`
-	DoneAt  *time.Time `json:"doneAt"`
-	DueDate time.Time  `json:"dueDate"`
-	UserId  string     `json:"userId"`
+	Id      string    `json:"id"`
+	Name    string    `json:"name"`
+	DoneAt  string    `json:"doneAt"`
+	DueDate time.Time `json:"dueDate"`
+	UserId  string    `json:"userId"`
 }
 
 type USER struct {
@@ -156,7 +156,8 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 
 	var updatedTodo TODO
 	if err := json.NewDecoder(r.Body).Decode(&updatedTodo); err != nil {
-		respondWithJSON(w, http.StatusBadRequest, map[string]string{"error": "parâmetros inválidos"})
+		fmt.Println(err.Error())
+		respondWithJSON(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
 	}
 
@@ -164,7 +165,13 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 		if todo.Id == id {
 			TODOS[i].Name = updatedTodo.Name
 			TODOS[i].DueDate = updatedTodo.DueDate
-			TODOS[i].DoneAt = updatedTodo.DoneAt
+
+			doneAt := time.Now().Format(time.RFC3339)
+			if len(TODOS[i].DoneAt) > 0 {
+				doneAt = ""
+			}
+
+			TODOS[i].DoneAt = doneAt
 
 			respondWithJSON(w, http.StatusOK, TODOS[i])
 			return
