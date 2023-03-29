@@ -11,8 +11,8 @@ type Props = {
 }
 
 function TodoItem({ todo }: { todo: Todo }) {
-    const dueDate = dayjs(todo.dueDate).format("DD/MM/YYYY HH:mm");
-    const doneAt = dayjs(todo.doneAt).format("DD/MM/YYYY HH:mm");
+    const dueDate = dayjs.unix(todo.dueDate).format("DD/MM/YYYY HH:mm");
+    const doneAt = dayjs.unix(todo.doneAt).format("DD/MM/YYYY HH:mm");
     const theme = useTheme();
 
     const backgroundColor = !!todo.doneAt

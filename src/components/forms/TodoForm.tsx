@@ -1,10 +1,12 @@
+import dayjs from "dayjs";
 import { useState } from "react";
 import { Button, TextInput } from "react-native-paper";
 import { DatePicker } from "../controllers/DatePicker";
+import firestore, { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 
 type NewTodo = {
     name: string;
-    dueDate: string;
+    dueDate: FirebaseFirestoreTypes.Timestamp;
 }
 
 type Props = {
@@ -22,7 +24,7 @@ export function TodoForm({ onSubmit }: Props) {
             <Button 
                 mode="contained" 
                 icon={"content-save"}
-                onPress={() => onSubmit({ name, dueDate: dueDate.toISOString() })}
+                onPress={() => onSubmit({ name, dueDate: firestore.Timestamp.fromDate(dueDate) })}
             >Salvar</Button>
         </>
     );

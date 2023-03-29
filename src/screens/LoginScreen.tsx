@@ -44,7 +44,7 @@ export function LoginScreen({ navigation }: LoginScreenProps) {
                         icon={isPasswordVisible ? "eye" : "eye-off"}
                     />
                     }
-                    secureTextEntry={isPasswordVisible}
+                    secureTextEntry={!isPasswordVisible}
                     label={"Senha"}
                     value={password}
                     mode={"outlined"}

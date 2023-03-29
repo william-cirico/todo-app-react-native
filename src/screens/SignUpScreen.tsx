@@ -1,15 +1,14 @@
-import { Alert, ScrollView, StyleSheet, View } from "react-native";
-import Lottie from "lottie-react-native";
-import { Button, HelperText, TextInput, useTheme } from "react-native-paper";
-import { Formik } from "formik";
-import * as yup from "yup";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { Formik } from "formik";
+import Lottie from "lottie-react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
+import { Button, HelperText, TextInput, useTheme } from "react-native-paper";
+import * as yup from "yup";
 import { GuestStackParamList } from "../routes/GuestRoutes";
-import { useMutation } from "@tanstack/react-query";
 import { User } from "../types/user";
+import auth from "@react-native-firebase/auth";
 
 const validationSchema = yup.object().shape({
-    name: yup.string().required("o nome é obrigatório").min(6, "o nome precisa ter no mínimo 6 caracteres"),
     email: yup.string().email("o e-mail precisa ser válido").required("o e-mail é obrigatório"),
     password: yup.string().required("a senha é obrigatória").min(8, "a senha precisa ter no mínimo 8 caracteres"),
     confirmPassword: yup.string().oneOf([yup.ref("password"), null], "as senhas não são iguais")
@@ -19,7 +18,6 @@ type SignUpScreenProps = NativeStackScreenProps<GuestStackParamList, "SignUp">;
 
 export function SignUpScreen({ navigation, route }: SignUpScreenProps) {
     const initialValues = {
-        name: "",
         email: route.params.email,
         password: "",
         confirmPassword: ""
@@ -27,11 +25,26 @@ export function SignUpScreen({ navigation, route }: SignUpScreenProps) {
 
     const theme = useTheme();
 
-    const { mutate: createUser } = useMutation({
-        mutationFn: (user: User) => createUser(user),
-        onSuccess: () => Alert.alert("Sucesso!", "Usuário criado!"),
-        onError: () => Alert.alert("Falha", "Ocorreu uma falha ao criar o usuário")
-    });
+    // const { mutate: createUser } = useMutation({
+    //     mutationFn: (user: User) => createUser(user),
+    //     onSuccess: () => Alert.alert("Sucesso!", "Usuário criado!"),
+    //     onError: () => Alert.alert("Falha", "Ocorreu uma falha ao criar o usuário")
+    // });
+
+    function createUser({ email, password }: User) {
+        auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(() => Alert.alert("Sucesso!", "O usuário foi criado com sucesso!"))
+            .catch(error => {
+                if (error.code === "auth/email-already-in-use") {
+                    Alert.alert("Falha", "Já existe um usuário cadastrado com esse e-mail")
+                }
+
+                if (error.code === "auth/invalid-email") {
+                    Alert.alert("Falha", "E-mail é inválido")
+                }
+            })
+    }
 
     return (
         <ScrollView style={styles.container}>
@@ -54,7 +67,7 @@ export function SignUpScreen({ navigation, route }: SignUpScreenProps) {
             >
                 {({ handleChange, handleBlur, isValid, handleSubmit, errors, values, touched }) => (
                     <View style={styles.form}>
-                        <TextInput 
+                        {/* <TextInput 
                             label={"Nome"} 
                             value={values.name} 
                             onChangeText={handleChange("name")} 
@@ -62,8 +75,8 @@ export function SignUpScreen({ navigation, route }: SignUpScreenProps) {
                             error={touched.name && !!errors.name}
                             right={(touched.name && !errors.name) && <TextInput.Icon icon="check-circle" iconColor="green" />}
                             mode="outlined" 
-                        />
-                        <HelperText type="error" visible={touched.name && !!errors.name}>{errors.name}</HelperText>
+                        /> */}
+                        {/* <HelperText type="error" visible={touched.name && !!errors.name}>{errors.name}</HelperText> */}
                         <TextInput 
                             label={"E-mail"} 
                             value={values.email} 
